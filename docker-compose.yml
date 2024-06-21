@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  web:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/code
+    command: /entrypoint.sh
+    depends_on:
+      - db
+    networks:
+      - django_network  # Use the defined network
+
+  db:
+    image: postgres:13  # Use the PostgreSQL image (adjust version as needed)
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      - django_network  # Use the defined network
+
+networks:
+  django_network:
+    driver: bridge
